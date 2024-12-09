@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data Viewer and Editor</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid black;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        button {
+            margin: 10px 0;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>CSV Data Viewer and Editor</h1>
+
+    <!-- CSV File Input -->
+    <input type="file" id="csvFileInput" accept=".csv" />
+    <button onclick="loadCSV()">Load CSV</button>
+
+    <!-- Export JSON Button -->
+    <button onclick="exportToJSON()">Export as JSON</button>
+
+    <!-- Table for displaying CSV data -->
+    <table id="data-table">
+        <thead id="table-head">
+            <!-- Table headers will be dynamically added here -->
+        </thead>
+        <tbody id="table-body">
+            <!-- Table rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <script>
+        let parsedData = []; // Variable to store parsed CSV data
+
+        // Function to load and parse the CSV file
+        function loadCSV() {
+            const csvFileInput = document.getElementById('csvFileInput').files[0];
+
+            if (!csvFileInput) {
+                alert("Please select a CSV file first!");
+                return;
+            }
+
+            Papa.parse(csvFileInput, {
+                header: true, // Treat the first row as header
+                skipEmptyLines: true,
+                complete: function(results) {
+                    parsedData = results.data; // Store parsed data
+                    populateTable(parsedData); // Populate table with CSV data
+                },
+                error: function(error) {
+                    console.error("Error parsing CSV:", error);
+                }
+            });
+        }
+
+        // Function to populate the table with parsed CSV data
+        function populateTable(data) {
+            const tableHead = document.getElementById('table-head');
+            const tableBody = document.getElementById('table-body');
+
+            // Clear previous data
+            tableHead.innerHTML = '';
+            tableBody.innerHTML = '';
+
+            // Dynamically create table headers based on CSV headers
+            const headers = Object.keys(data[0]);
+            const headerRow = document.createElement('tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            tableHead.appendChild(headerRow);
+
+            // Populate table rows with data
+            data.forEach((row, rowIndex) => {
+                const dataRow = document.createElement('tr');
+                headers.forEach(header => {
+                    const td = document.createElement('td');
+
+                    // Create an input field to allow data editing
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = row[header];
+
+                    // Update parsedData when user edits a value
+                    input.addEventListener('change', function() {
+                        parsedData[rowIndex][header] = input.value; // Update the parsed data array
+                    });
+
+                    td.appendChild(input);
+                    dataRow.appendChild(td);
+                });
+                tableBody.appendChild(dataRow);
+            });
+        }
+
+        // Function to export the table data as JSON
+        function exportToJSON() {
+            if (parsedData.length === 0) {
+                alert("No data to export! Please load a CSV file first.");
+                return;
+            }
+
+            const jsonData = JSON.stringify(parsedData, null, 2); // Convert parsed data to JSON
+            const blob = new Blob([jsonData], {
+                type: 'application/json'
+            }); // Create a Blob from JSON
+            const link = document.createElement('a'); // Create a download link
+            link.href = URL.createObjectURL(blob);
+            link.download = 'data.json'; // Set the download file name
+            link.click(); // Trigger the download
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+}
+
+#task-container {
+    margin-bottom: 20px;
+}
+
+#timer-container {
+    margin-bottom: 20px;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h3 {
+    font-size: 18px;
+}

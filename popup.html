@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <h1>Pomodoro Timer</h1>
+    <div id="task-container">
+        <input type="text" id="task-input" placeholder="Enter task" />
+        <button id="add-task">Add Task</button>
+    </div>
+    <div id="timer-container">
+        <h2 id="timer">25:00</h2>
+        <button id="start-timer">Start</button>
+        <button id="reset-timer">Reset</button>
+    </div>
+    <div id="settings-container">
+        <label for="break-type">Break Content:</label>
+        <select id="break-type">
+            <option value="quote">Motivational Quote</option>
+            <option value="youtube">YouTube Video</option>
+            <option value="song">Song</option>
+        </select>
+    </div>
+    <div id="reminders">
+        <h3>Reminders</h3>
+        <label><input type="checkbox" id="water-reminder"> Water Reminder</label><br>
+        <label><input type="checkbox" id="blink-reminder"> Blink Reminder</label><br>
+        <label><input type="checkbox" id="email-reminder"> Email Reminder</label><br>
+        <label><input type="checkbox" id="birthday-reminder"> Birthday Reminder</label>
+
+        <h4>Birthday Reminder</h4>
+        <input type="text" id="birthday-name" placeholder="Enter name" />
+        <input type="date" id="birthday-date" />
+        <button id="add-birthday">Add Birthday</button>
+        <ul id="birthday-list"></ul>
+
+
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>
